@@ -12,7 +12,6 @@ module.exports = (svgOutput, componentName, sendprops) => {
     .map(line => `    ${line}`)
     .join('\n');
 
-  if (sendprops)
   svgOutput = svgOutput.replace(/(<svg .+)(>)/gi, '$1 {...props} $2');
 
   return `
