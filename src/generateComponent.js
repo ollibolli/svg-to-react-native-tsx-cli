@@ -6,7 +6,16 @@
  * @param  string componentName The name of the component without extension
  * @return string               The parsed component string
  */
-module.exports = (svgOutput, componentName) => `
+module.exports = (svgOutput, componentName, sendprops) => {
+  svgOutput = svgOutput
+    .split('\n')
+    .map(line => `    ${line}`)
+    .join('\n');
+
+  if (sendprops)
+  svgOutput = svgOutput.replace(/(<svg .+)(>)/gi, '$1 {...props} $2');
+
+  return `
 import React from 'react';
 import {
   Svg,
@@ -24,15 +33,14 @@ import {
   Text,
   Use,
   Defs,
-  Stop
+  Stop,
+  SvgProps
 } from 'react-native-svg';
 
-export default function ${componentName}(props) {
+export default function ${componentName}(props: SvgProps) {
   return (
-${svgOutput
-  .split('\n')
-  .map(line => `    ${line}`)
-  .join('\n')}
+${svgOutput}
   );
 }
 `;
+}
