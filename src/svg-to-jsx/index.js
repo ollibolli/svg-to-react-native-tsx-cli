@@ -37,7 +37,8 @@ function parseSVG(svg, callback) {
 }
 
 function afterParseSVG(parsedSVG) {
-    utils.forEach(parsedSVG, function(element) {
+  console.log('index.js', parsedSVG );
+  utils.forEach(parsedSVG, function(element) {
         if (element.tagName === 'use') {
             var referenceHref = element.attributes['xlink:href'] || '';
             var referenceID = referenceHref.slice(1);
