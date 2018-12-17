@@ -8,7 +8,6 @@ const fs = require('fs');
 const yargs = require('yargs');
 const path = require('path');
 const jsdom = require('jsdom-no-contextify');
-const SVGtoJSX = require('svg-to-jsx');
 
 // Language files
 const content = require('./lang/en');
@@ -20,6 +19,7 @@ const generateComponent = require('./src/generateComponent');
 const printErrors = require('./src/output').printErrors;
 const removeStyle = require('./src/removeStyle');
 const replaceAllStrings = require('./src/replaceAllStrings');
+const SVGtoJSX = require('./src/svg-to-jsx');
 
 // Argument setup
 const args = yargs
