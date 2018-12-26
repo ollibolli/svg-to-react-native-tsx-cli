@@ -1,5 +1,8 @@
-import * as React from 'react';
-import * as ReactNative from 'react-native';
+// this is typedefs from react-native-svg v8.0.10
+// only intrested in interface and enums. Have comment out excluded classes and some interfaces
+
+//import * as React from 'react';
+//import * as ReactNative from 'react-native';
 
 // Common props
 type NumberProp = string | number;
@@ -58,7 +61,7 @@ export type AlignmentBaseline =
   | 'after-edge'
   | 'hanging'
   ;
-export type BaselineShift = 'sub' | 'super' | 'baseline' | ReadonlyArray<NumberProp> | NumberProp;
+export type BaselineShift = 'sub' | 'super' | 'baseline' | NumberProp;
 export type LengthAdjust = 'spacing' | 'spacingAndGlyphs';
 
 export type TextPathMethod = 'align' | 'stretch';
@@ -79,9 +82,9 @@ export interface TouchableProps {
   delayLongPress?: number
 }
 
-export interface ResponderProps extends ReactNative.GestureResponderHandlers {
-  pointerEvents?: (event: any) => any,
-}
+// export interface ResponderProps extends ReactNative.GestureResponderHandlers {
+//   pointerEvents?: (event: any) => any,
+// }
 
 export interface FillProps {
   fill?: string,
@@ -102,7 +105,7 @@ export interface StrokeProps {
   stroke?: string,
   strokeWidth?: NumberProp,
   strokeOpacity?: NumberProp,
-  strokeDasharray?: ReadonlyArray<number> | string,
+  strokeDasharray?: number | string,
   strokeDashoffset?: NumberProp,
   strokeLinecap?: Linecap,
   strokeLinejoin?: Linejoin,
@@ -152,55 +155,60 @@ export interface TransformProps extends TransformObject {
 }
 
 export interface CommonMaskProps {
-    mask?: string;
-  }
+  mask?: string;
+}
 
-export interface CommonPathProps extends FillProps, StrokeProps, ClipProps, TransformProps, ResponderProps, TouchableProps, DefinitionProps, CommonMaskProps {}
+export interface CommonPathProps extends FillProps, StrokeProps, ClipProps, TransformProps/*, ResponderProps*/, TouchableProps, DefinitionProps, CommonMaskProps {}
 
 // Element props
 export interface CircleProps extends CommonPathProps {
   cx?: NumberProp,
   cy?: NumberProp,
+  opacity?: NumberProp,
   r?: NumberProp,
 }
-export const Circle: React.ComponentClass<CircleProps>;
+// export const Circle: React.ComponentClass<CircleProps>;
 
 export interface ClipPathProps {
   id: string,
 }
-export const ClipPath: React.ComponentClass<ClipPathProps>;
+// export const ClipPath: React.ComponentClass<ClipPathProps>;
 
-export const Defs: React.ComponentClass<{}>;
+// export const Defs: React.ComponentClass<{}>;
 
 export interface EllipseProps extends CommonPathProps {
   cx?: NumberProp,
   cy?: NumberProp,
+  opacity?: NumberProp,
   rx?: NumberProp,
   ry?: NumberProp,
 }
-export const Ellipse: React.ComponentClass<EllipseProps>;
+// export const Ellipse: React.ComponentClass<EllipseProps>;
 
 export interface GProps extends CommonPathProps {
+  opacity?: NumberProp,
 }
-export const G: React.ComponentClass<GProps>;
+// export const G: React.ComponentClass<GProps>;
 
-export interface ImageProps extends ResponderProps, TouchableProps {
+export interface ImageProps extends /*ResponderProps,*/ TouchableProps {
   x?: NumberProp,
   y?: NumberProp,
   width?: NumberProp,
   height?: NumberProp,
-  href: ReactNative.ImageProperties['source'],
+  href: string, //ReactNative.ImageProperties['source'],
   preserveAspectRatio?: string,
+  opacity?: NumberProp,
 }
-export const Image: React.ComponentClass<ImageProps>;
+// export const Image: React.ComponentClass<ImageProps>;
 
 export interface LineProps extends CommonPathProps {
+  opacity?: NumberProp,
   x1?: NumberProp,
   x2?: NumberProp,
   y1?: NumberProp,
   y2?: NumberProp,
 }
-export const Line: React.ComponentClass<LineProps>;
+// export const Line: React.ComponentClass<LineProps>;
 
 export interface LinearGradientProps {
   x1?: NumberProp,
@@ -210,12 +218,13 @@ export interface LinearGradientProps {
   gradientUnits?: Units,
   id: string,
 }
-export const LinearGradient: React.ComponentClass<LinearGradientProps>;
+// export const LinearGradient: React.ComponentClass<LinearGradientProps>;
 
 export interface PathProps extends CommonPathProps {
   d: string,
+  opacity?: NumberProp,
 }
-export const Path: React.ComponentClass<PathProps>;
+// export const Path: React.ComponentClass<PathProps>;
 
 export interface PatternProps {
   id: string,
@@ -229,17 +238,19 @@ export interface PatternProps {
   viewBox?: string,
   preserveAspectRatio?: string
 }
-export const Pattern: React.ComponentClass<PatternProps>;
+// export const Pattern: React.ComponentClass<PatternProps>;
 
 export interface PolygonProps extends CommonPathProps {
-  points: string | ReadonlyArray<any>,
+  opacity?: NumberProp,
+  points: string | any,
 }
-export const Polygon: React.ComponentClass<PolygonProps>;
+// export const Polygon: React.ComponentClass<PolygonProps>;
 
 export interface PolylineProps extends CommonPathProps {
-  points: string | ReadonlyArray<any>,
+  opacity?: NumberProp,
+  points: string | any,
 }
-export const Polyline: React.ComponentClass<PolylineProps>;
+// export const Polyline: React.ComponentClass<PolylineProps>;
 
 export interface RadialGradientProps {
   fx?: NumberProp,
@@ -252,7 +263,7 @@ export interface RadialGradientProps {
   gradientUnits?: Units,
   id: string,
 }
-export const RadialGradient: React.ComponentClass<RadialGradientProps>;
+// export const RadialGradient: React.ComponentClass<RadialGradientProps>;
 
 export interface RectProps extends CommonPathProps {
   x?: NumberProp,
@@ -262,39 +273,41 @@ export interface RectProps extends CommonPathProps {
   rx?: NumberProp,
   ry?: NumberProp,
   class?: string,
+  opacity?: NumberProp,
 }
-export const Rect: React.ComponentClass<RectProps>;
+// export const Rect: React.ComponentClass<RectProps>;
 
 export interface StopProps {
   stopColor?: string,
   stopOpacity?: NumberProp,
   offset?: string,
 }
-export const Stop: React.ComponentClass<StopProps>;
+// export const Stop: React.ComponentClass<StopProps>;
 
-export interface SvgProps extends ReactNative.ViewProperties {
-  width: NumberProp,
-  height: NumberProp,
+export interface SvgProps /*extends ReactNative.ViewProperties*/ {
+  width?: NumberProp,
+  height?: NumberProp,
   viewBox?: string,
   preserveAspectRatio?: string,
 }
 
 // Svg is both regular and default exported
-export const Svg: React.ComponentClass<SvgProps>;
+// export const Svg: React.ComponentClass<SvgProps>;
 export default Svg;
 
 export interface SymbolProps {
   id: string,
   viewBox?: string,
   preserveAspectRatio?: string,
+  opacity?: NumberProp,
 }
-export const Symbol: React.ComponentClass<SymbolProps>;
+// export const Symbol: React.ComponentClass<SymbolProps>;
 
 export interface TSpanProps extends CommonPathProps, FontProps {
   dx?: NumberProp,
   dy?: NumberProp,
 }
-export const TSpan: React.ComponentClass<TSpanProps>;
+// export const TSpan: React.ComponentClass<TSpanProps>;
 
 export interface TextSpecificProps extends CommonPathProps, FontProps {
   alignmentBaseline?: AlignmentBaseline,
@@ -302,15 +315,16 @@ export interface TextSpecificProps extends CommonPathProps, FontProps {
   verticalAlign?: NumberProp,
   lengthAdjust?: LengthAdjust,
   textLength?: NumberProp,
-  fontData?: null | { [name: string]: any },
+  fontData?: null | any, //{ [name: string]: any },
   fontFeatureSettings?: string,
 }
 
 export interface TextProps extends TextSpecificProps {
   dx?: NumberProp,
   dy?: NumberProp,
+  opacity?: NumberProp,
 }
-export const Text: React.ComponentClass<TextProps>;
+// export const Text: React.ComponentClass<TextProps>;
 
 export interface TextPathProps extends TextSpecificProps {
   href: string,
@@ -319,7 +333,7 @@ export interface TextPathProps extends TextSpecificProps {
   spacing?: TextPathSpacing,
   midLine: TextPathMidLine,
 }
-export const TextPath: React.ComponentClass<TextPathProps>;
+// export const TextPath: React.ComponentClass<TextPathProps>;
 
 export interface UseProps extends CommonPathProps {
   href: string,
@@ -327,8 +341,9 @@ export interface UseProps extends CommonPathProps {
   height?: string,
   x?: NumberProp,
   y?: NumberProp,
+  opacity?: NumberProp,
 }
-export const Use: React.ComponentClass<UseProps>;
+// export const Use: React.ComponentClass<UseProps>;
 
 
 export enum EMaskUnits {
@@ -337,8 +352,8 @@ export enum EMaskUnits {
 }
 
 export type TMaskUnits =
-| EMaskUnits.USER_SPACE_ON_USE
-| EMaskUnits.OBJECT_BOUNDING_BOX;
+  | EMaskUnits.USER_SPACE_ON_USE
+  | EMaskUnits.OBJECT_BOUNDING_BOX;
 
 export interface MaskProps extends CommonPathProps {
   id: string,
@@ -350,4 +365,4 @@ export interface MaskProps extends CommonPathProps {
   maskUnits?: TMaskUnits,
   maskContentUnits?: TMaskUnits,
 }
-export const Mask: React.ComponentClass<MaskProps>;
+// export const Mask: React.ComponentClass<MaskProps>;

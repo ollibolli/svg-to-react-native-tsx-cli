@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "outDir": "./build/",
+    "sourceMap": false,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "target": "es6",
+    "allowJs": true,
+    "jsx": "React",
+    "lib" : [
+      "es6",
+      "es2015",
+      "es2016",
+      "es2017",
+    ],
+    "experimentalDecorators": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.js",
+  ],
+  "exclude": [
+    "node_modules",
+  ]
+}

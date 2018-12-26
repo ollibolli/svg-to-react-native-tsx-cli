@@ -3,7 +3,6 @@
 'use strict';
 
 // Vendor includes
-const chalk = require('chalk');
 const fs = require('fs');
 const yargs = require('yargs');
 const path = require('path');
@@ -13,13 +12,14 @@ const jsdom = require('jsdom-no-contextify');
 const content = require('./lang/en');
 
 // Local includes
-const createComponentName = require('./src/createComponentName');
-const formatSVG = require('./src/formatSVG');
-const generateComponent = require('./src/generateComponent');
-const printErrors = require('./src/output').printErrors;
-const removeStyle = require('./src/removeStyle');
-const replaceAllStrings = require('./src/replaceAllStrings');
-const SVGtoJSX = require('./src/svg-to-jsx');
+const createComponentName = require('./createComponentName');
+const formatSVG = require('./formatSVG');
+const generateComponent = require('./generateComponent');
+const printErrors = require('./output').printErrors;
+const printWarnig = require('./output').printWarning;
+const removeStyle = require('./removeStyle');
+const replaceAllStrings = require('./replaceAllStrings');
+const SVGtoJSX = require('./svg-to-jsx');
 
 // Argument setup
 const args = yargs
@@ -39,7 +39,7 @@ const rmStyle = args.rmStyle;
 const format = args.format;
 const index = args.index;
 
-let indexOutput = '';
+let indexOutput = 'export default {';
 
 // Bootstrap base variables
 const svg = `./${firstArg}.svg`;
@@ -73,9 +73,7 @@ const writeFile = (processedSVG, fileName) => {
       console.log('File written to -> ' + file);
 
       if (filesWritten === fileCount) {
-        console.log(
-          `${filesWritten} components created. That must be some kind of record`
-        );
+        console.log(`${filesWritten} components created. That must be some kind of record`);
         console.log();
         console.log(content.processCompleteText);
         console.log();
@@ -94,62 +92,18 @@ const runUtil = (fileToRead, fileToWrite) => {
       }
 
       let output = file;
+      console.log('processing ' + fileToRead);
+      return SVGtoJSX(output, {filename: fileToRead}).then((jsx)=>{
+        // Wrap it up in a React component
+        jsx = generateComponent(jsx, fileToWrite);
 
-      jsdom.env(output, (err, window) => {
-        const body = window.document.getElementsByTagName('body')[0];
-
-        if (rmStyle) {
-          removeStyle(body);
-        }
-
-        // Add width and height
-        // The order of precedence of how width/height is set on to an element is as follows:
-        // 1st - passed in props are always priority one. This gives run time control to the container
-        // 2nd - svg set width/height is second priority
-        // 3rd - if no props, and no svg width/height, use the viewbox width/height as the width/height
-        // 4th - if no props, svg width/height or viewbox, simlpy set it to 50px/50px
-        let defaultWidth = '50px';
-        let defaultheight = '50px';
-        if (body.firstChild.hasAttribute('viewBox')) {
-          const [minX, minY, width, height] = body.firstChild
-            .getAttribute('viewBox')
-            .split(/[,\s]+/);
-          defaultWidth = width;
-          defaultheight = height;
-        }
-
-        if (!body.firstChild.hasAttribute('width')) {
-          body.firstChild.setAttribute('width', defaultWidth);
-        }
-        if (!body.firstChild.hasAttribute('height')) {
-          body.firstChild.setAttribute('height', defaultheight);
-        }
-
-        // Add generic props attribute to parent element, allowing props to be passed to the svg
-        // such as className
-        body.firstChild.setAttribute(':props:', '');
-
-        // Now that we are done with manipulating the node/s we can return it back as a string
-        output = body.innerHTML;
-
-        // Convert from SVG to JSX
-        return SVGtoJSX(output, (err, jsx) => {
-          if (err){
-            reject(err);
+        writeFile(jsx, fileToWrite).then(() => {
+          if (index && directoryPath) {
+            indexOutput = `export {default as ${fileToWrite}} from './${fileToWrite}'\n${indexOutput}`
+            indexOutput += `\n\t${fileToWrite},`
           }
-          // Convert any html tags to react-native-svg tags
-          jsx = replaceAllStrings(jsx);
-
-          // Wrap it up in a React component
-          jsx = generateComponent(jsx, fileToWrite);
-
-          writeFile(jsx, fileToWrite).then(() => {
-            if (index && directoryPath) {
-              indexOutput += `\nexport {default as ${fileToWrite}} from './${fileToWrite}'`
-            }
-            resolve();
-          }).catch(reject);
-        });
+          resolve();
+        }).catch(reject);
       });
     });
   });
@@ -165,7 +119,6 @@ const runUtilForAllInDir = () => {
       const resolvedFile = path.resolve(process.cwd(), directoryPath, file);
       const extension = path.extname(resolvedFile);
       const fileName = path.basename(resolvedFile);
-
       if (extension === '.svg') {
         // variable instantiated up top
         const componentName = createComponentName(file, fileName);
@@ -176,7 +129,7 @@ const runUtilForAllInDir = () => {
 
     })).then(() => {
       if (index && outputPath)
-        writeFile(indexOutput, path.resolve(process.cwd(), outputPath, `index`));
+        writeFile(indexOutput += '\n};', path.resolve(process.cwd(), outputPath, `index`));
     }).catch(()=>{})
   });
 };

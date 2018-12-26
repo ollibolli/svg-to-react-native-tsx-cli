@@ -10,3 +10,6 @@ const chalk = require('chalk');
 module.exports.printErrors = function(text) {
   console.log(chalk.red(text));
 }
+module.exports.printWarning = function(text) {
+  console.log(chalk.y(text));
+}

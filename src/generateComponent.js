@@ -12,7 +12,7 @@ module.exports = (svgOutput, componentName, sendprops) => {
     .map(line => `    ${line}`)
     .join('\n');
 
-  svgOutput = svgOutput.replace(/(<svg .+)(>)/gi, '$1 {...props} $2');
+  svgOutput = svgOutput.replace(/(<svg.*)(>)/gi, '$1 {...props} $2');
 
   return `
 import React from 'react';

@@ -2,20 +2,25 @@
   "name": "svg-to-react-native-tsx-cli",
   "version": "0.0.7",
   "description": "Based on svg-to-react-native-cli. A command line utility that takes a svg image file and outputs a fully formatted stateless functional React Native component with `height` and `width` for props. With flags to toggle formatting and remove style attributes.",
-  "main": "index.js",
+  "main": "build/index.js",
   "dependencies": {
-    "yargs": "^6.5.0",
+    "chalk": "^2.4.1",
+    "jsdom-no-contextify": "^3.1.0",
     "object-assign": "^4.0.1",
     "q": "^1.4.1",
+    "ts-interface-builder": "^0.1.7",
+    "ts-interface-checker": "^0.1.6",
     "xml2js": "^0.4.10",
-    "xmlbuilder": "^2.6.4"
+    "xmlbuilder": "^2.6.4",
+    "yargs": "^6.5.0"
   },
   "scripts": {
-    "test": "node index.js ./src/test-svgs/test2 TestSvg --output ./src/test-svgs/"
+    "generateValidatorsFromInterfaces": "ts-interface-builder src/typeCheck/react-native-svg-interfaces-v8.0.8.d.ts",
+    "test": "tsc && node ./build/index.js ./src/test-svgs/test2 TestSvg --output ./src/test-svgs/"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chrisbull/svg-to-react-native-cli.git"
+    "url": "git+https://github.com/ollibolli/svg-to-react-native-tsx-cli.git"
   },
   "keywords": [
     "react",
@@ -30,6 +35,11 @@
   },
   "homepage": "https://github.com/chrisbull/svg-to-react-native-cli#readme",
   "bin": {
-    "svg-to-react-native-tsx": "./index.js"
+    "svg-to-react-native-tsx": "./build/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.15",
+    "@types/react-native": "^0.57.23",
+    "react-native-svg": "^8.0.10"
   }
 }
